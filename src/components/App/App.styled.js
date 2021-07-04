@@ -13,7 +13,3 @@ export const TitleInput = styled.h2``;
 export const Button = styled.button``;
 
 export const TitleBook = styled.h2``;
-
-export const List = styled.ul``;
-
-export const Item = styled.li``;

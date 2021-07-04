@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {Container, TitleMain, Form, Input, TitleBook, TitleInput, Button, List, Item} from './App.styled.js'
-import nanoid from '../utils/nanoid.js';
+import {Container, TitleMain, Form, Input, TitleBook, TitleInput, Button,} from './App.styled.js'
+import nanoid from '../../utils/nanoid.js';
+import ContactsList from '../ContactsList/ContactsList';
 export class App extends Component {
   state = {
   contacts: [],
@@ -9,18 +10,17 @@ export class App extends Component {
   handleButton = (e) => {
     const { name } = this.state;
     const obj = {
-      name: name,
+      name,
       id: nanoid(),
     };
-    this.setState(prev =>({ contacts: {...obj} }))
-
+    this.setState({contacts: [...this.state.contacts, obj]})
   }
 
   handleChange = (e) => {
-    // console.log(e.currentTarget.value)
     this.setState({name: e.currentTarget.value,})
   }
   render() {
+    const { contacts } = this.state;
     return (
       <Container>
         <TitleMain>Phonebook</TitleMain>
@@ -37,9 +37,7 @@ export class App extends Component {
         </Form>
         <Button onClick={this.handleButton}>Add contact</Button>
         <TitleBook>Contacts</TitleBook>
-        <List>
-          <Item/>
-        </List>
+        <ContactsList contacts={contacts}/>
       </Container>
     )
   }
