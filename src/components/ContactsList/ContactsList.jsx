@@ -5,8 +5,8 @@ const ContactsList = ({contacts}) => {
     // console.log(contacts)
     return (
         <List>
-            {contacts.map(({ id, name }) => (
-               <Item key={id} >{name}</Item>
+            {contacts.map(({ id, name, number }) => (
+                <Item key={id} >{name}: {number }</Item>
             ))}
         </List>
     )
