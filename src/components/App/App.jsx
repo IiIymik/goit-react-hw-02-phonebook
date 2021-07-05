@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import {Container, TitleMain, Form, Input, TitleBook, TitleInput, Button,} from './App.styled.js'
-import nanoid from '../../utils/nanoid.js';
+import Form from '../Form/Form';
+import {Container, TitleMain, TitleBook,} from './App.styled.js'
 import ContactsList from '../ContactsList/ContactsList';
+import Filter from '../Filter/Filter';
+
+
 export class App extends Component {
   state = {
   contacts: [{id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
@@ -10,24 +13,12 @@ export class App extends Component {
     {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
   ],
   filter: '',
-  name: '',
-  number: ''
-  }
-  
-  handleButton = (e) => {
-    e.preventDefault()
-    const { name,number } = this.state;
-    const obj = {
-      name,
-      number,
-      id: nanoid(),
-    };
-    this.setState({ contacts: [...this.state.contacts, obj] });
   }
 
-  handleChange = (e) => {
-    const { name, value } = e.currentTarget;
-    this.setState({[name]: value,})
+  deleteContact = contactId => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter((contact) => contact.id !== contactId),
+    }))
   }
 
   findContacts = (e) => {
@@ -40,37 +31,21 @@ export class App extends Component {
     const normalizedFilter = filter.toLowerCase();
     return contacts.filter(contact =>contact.name.toLowerCase().includes(normalizedFilter))
   }
+  
+  formSubmit = (data) => {
+   this.setState({ contacts: [...this.state.contacts, data] });
+  }
 
   render() {
-    const { contacts, filter } = this.state;
+    const {filter, contacts } = this.state;
     const visibleContacts = this.getVisibleContacts();
     return (
       <Container>
         <TitleMain>Phonebook</TitleMain>
-        <Form>
-         <TitleInput>Name</TitleInput> 
-          <Input
-  type="text"
-  name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            onChange={this.handleChange}
-  title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required       
-          />
-          <TitleInput>Number</TitleInput>
-          <Input 
-  type="tel"
-  name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            onChange={this.handleChange}
-  title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-  required
-          />
-        <Button onClick={this.handleButton}>Add contact</Button>
-        </Form>
+        <Form onSubmit={this.formSubmit} data={contacts}/>
         <TitleBook>Contacts</TitleBook>
-        <Input type="text" value={filter} onChange={this.findContacts} />
-        <ContactsList contacts={visibleContacts}/>
+        <Filter value={filter} onChange={this.findContacts} />
+        <ContactsList contacts={visibleContacts} onDeleteContact={this.deleteContact}/>
       </Container>
     )
   }

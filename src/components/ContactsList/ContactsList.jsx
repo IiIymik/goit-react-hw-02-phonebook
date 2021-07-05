@@ -1,12 +1,14 @@
 import React from 'react';
-import { List, Item} from './ContactsList.styled.js'
+import { List, Item, ButtonDel} from './ContactsList.styled.js'
 
-const ContactsList = ({contacts}) => {
+const ContactsList = ({contacts, onDeleteContact}) => {
     // console.log(contacts)
     return (
         <List>
             {contacts.map(({ id, name, number }) => (
-                <Item key={id} >{name}: {number }</Item>
+                <Item key={id} >{name}: {number}
+                <ButtonDel type="button" onClick={()=>onDeleteContact(id)}>Delete</ButtonDel>
+                </Item>
             ))}
         </List>
     )
