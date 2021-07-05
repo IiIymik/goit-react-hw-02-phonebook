@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import nanoid from '../../utils/nanoid.js';
 import { FormEl, Input, TitleInput, Button, } from './Form.styled.js';
 
-export default class Form extends Component { 
+export default class Form extends Component {
+   static propTypes = {
+     name: PropTypes.string,
+     number: PropTypes.string,
+    }
     state = {
     name: '',
     number: ''   
