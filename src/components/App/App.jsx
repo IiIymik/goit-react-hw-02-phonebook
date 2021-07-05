@@ -13,6 +13,7 @@ export class App extends Component {
   name: '',
   number: ''
   }
+  
   handleButton = (e) => {
     e.preventDefault()
     const { name,number } = this.state;
@@ -34,9 +35,15 @@ export class App extends Component {
     this.setState({filter: value,})
   }
 
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>contact.name.toLowerCase().includes(normalizedFilter))
+  }
 
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
     return (
       <Container>
         <TitleMain>Phonebook</TitleMain>
@@ -62,8 +69,8 @@ export class App extends Component {
         <Button onClick={this.handleButton}>Add contact</Button>
         </Form>
         <TitleBook>Contacts</TitleBook>
-        <Input type="text" name="find" onChange={this.findContacts} />
-        <ContactsList contacts={contacts}/>
+        <Input type="text" value={filter} onChange={this.findContacts} />
+        <ContactsList contacts={visibleContacts}/>
       </Container>
     )
   }
